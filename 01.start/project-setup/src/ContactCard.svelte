@@ -11,7 +11,9 @@
         box-shadow: -10px 10px 8px rgba(0, 0, 0, 0.26);
         width: 50%;
         border-radius: 15px;
-        margin: 1rem auto;
+        margin: 0.3rem auto;
+        height: 250px;
+        width: 100%;
     }
 
     header {
@@ -59,19 +61,24 @@
     }
 
     .description__section {
-        max-height: 100%;
         display:flex;
         flex-flow: row wrap;
         align-items: space-around;
         border-top: 1px solid #EE6C4D;
-        padding: 20px;
     }
     .description__section-skills{
         font-size: 12px;
         color:#98C1D9;
+        margin:0;
     }
     .description__section-summary{
         font-size: 1 rem;
+    }
+
+    @media (min-width:1200px){
+        .contact-card {
+        width: 50%;
+        }
     }
 </style>
 

@@ -5,25 +5,52 @@
 	let description='A like to develop applications with latest technologies';
 	let userImageUrl = 'https://i.pinimg.com/736x/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg';
 	let userSkills = 'Svelte, Javascript, Node, Ruby, Go, React, Express, Deno, Python';
+	let formState = '';
+	let createContacts = [];
+	const addContactHandler = () => {
+		if (userName.trim().length == 0 || titleJob.trim().length == 0 || userImageUrl.trim().length == 0 || userSkills.trim().length == 0 || description.trim().length == 0){
+			formState = 'invalid';
+			return;
+		}
+		createContacts = [...createContacts,{
+			id:Math.random(),
+			userName,
+			titleJob,
+			userImageUrl,
+			userSkills,
+			description
+		}]
+		formState = 'done';
+	}
+	const deleteFirstHandler = () => {
+		createContacts = createContacts.slice(1);
+	}
+	const deleteLastHandler = () => {	
+		createContacts = createContacts.slice(0,-1);
+	}
 
 </script>
 
 <style>
+	:global(*){
+        box-sizing: border-box;
+	}
 	:global(body){
 		background-color: #293241;
 		color:#E0FBFC;
 		transition: background-color 0.3s;
-		display: flex;
-		align-items: center;
+		
 	}
 	.container {
-		max-width: 90%;
+		width: 90%;
 		margin:0 auto;
 		display:flex;
+		flex-flow: wrap row;
 		justify-content: center;
 	}
 	.contact__section{
-		width: 50%;
+		text-align: center;
+		width: 100%;
 	}
 	.contact__section .input-group{
 		width: 100%;
@@ -41,10 +68,43 @@
 	.input-group textarea {
 		resize: none;
 	}
+	.contact-list__section{
+		display: flex;
+		flex-flow: wrap row;
+		width: 100%;
+		
+		justify-content: flex-start;
+		align-items: flex-start;
+	}
+	.btn{
+		border-radius: 5px;
+		padding:15px;
+		outline: none;
+		border:none;
+		font-weight: 700;
+	}
+	.btn-primary{
+		background-color: #EE6C4D;
+		color:#E0FBFC;
+		transition: all 0.5s ease;
+		cursor: pointer;
+	}
+	.btn-primary:hover{
+		background-color: #E0FBFC;
+		color:#EE6C4D;
+	}
+	@media (min-width:720px){
+        .contact__section{
+			width: 50%;
+		}
+		.contact-list__section{
+			width: 50%;
+			height: 80vh;
+			overflow-y:auto;
+		}
+    }
 </style>
 <div class="container">
-	
-	
 	<section class="contact__section">
 		<div class="title__container">
 			<h1>Data Contact Card</h1>
@@ -69,6 +129,28 @@
 			<label for="description">Description: </label>
 			<textarea name='text' class='form-control' bind:value={description} rows="3" id="description"></textarea>
 		</div>
+		<button on:click={addContactHandler} class="btn btn-primary">Add Contact Card</button>
+		<button on:click={deleteFirstHandler} class="btn btn-primary">Delete First</button>
+		<button on:click={deleteLastHandler} class="btn btn-primary">Delete Last</button>
+
 	</section>
-	<ContactCard {userName} {userImageUrl} {description} {titleJob} {userSkills}/>
+	
+	<section class="contact-list__section">
+		{#if formState === 'invalid'}
+		<p>Invalid Input</p>
+		{/if}
+		{#each createContacts as contact, i (contact.id)}
+		<ContactCard
+			userName={contact.userName} 
+			userImageUrl={contact.userImageUrl} 
+			description={contact.description} 
+			titleJob={contact.titleJob} 
+			userSkills={contact.userSkills}
+			/>
+		{:else}
+			<p>Please start adding some contacts</p>
+		{/each}
+		
+	</section>
+	
 </div>
